@@ -1,4 +1,10 @@
-import { SignedIn, SignedOut, SignInButton, SignOutButton } from "@clerk/clerk-react";
+import { Route, Routes } from "react-router";
+import Navbar from "./components/Navbar";
+import HomePage from "./pages/HomePage";
+import ProductPage from "./pages/ProductPage";
+import ProfilePage from "./pages/ProfilePage";
+import CreatePage from "./pages/CreatePage";
+import EditProductPage from "./pages/EditProductPage";
 
 
 function App() {
@@ -8,16 +14,18 @@ function App() {
 
     
     <div className="min-h-screen bg-base-100">
-      <h1 className="text-red-200">Hello PERN</h1>
+      
+      <Navbar />
 
-      <button className="btn btn-primary">Press Me</button>
-      <SignedOut>
-        <SignInButton mode="modal" />
-      </SignedOut>
-
-      <SignedIn>
-        <SignOutButton />
-      </SignedIn>
+      <main className="max-w-5xl mx-auto px-4 py-8">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/create" element={<CreatePage />} />
+          <Route path="/edit/:id" element={<EditProductPage />} />
+        </Routes>
+      </main>
 
     </div>
   )
