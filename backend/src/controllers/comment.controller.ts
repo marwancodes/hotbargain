@@ -8,16 +8,16 @@ import { getAuth } from "@clerk/express";
 export const createComment = async (req: Request, res: Response) => {
   try {
     const { userId } = getAuth(req);
-    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!userId) return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const { productId } = req.params;
     const { content } = req.body;
 
-    if (!content) return res.status(400).json({ error: "Comment content is required" });
+    if (!content) return res.status(400).json({ success: false, message: "Comment content is required" });
 
     // verify product exists
     const product = await queries.getProductById(productId);
-    if (!product) return res.status(404).json({ error: "Product not found" });
+    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
 
     const comment = await queries.createComment({
       content,
@@ -25,10 +25,10 @@ export const createComment = async (req: Request, res: Response) => {
       productId,
     });
 
-    res.status(201).json(comment);
+    res.status(201).json({ success: true, message: "Comment created successfully", data:comment });
   } catch (error) {
     console.error("Error creating comment:", error);
-    res.status(500).json({ error: "Failed to create comment" });
+    res.status(500).json({ success: false, message: "Failed to create comment" });
   }
 };
 
@@ -37,22 +37,22 @@ export const createComment = async (req: Request, res: Response) => {
 export const deleteComment = async (req: Request, res: Response) => {
   try {
     const { userId } = getAuth(req);
-    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!userId) return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const { commentId } = req.params;
 
     // check if comment exists and belongs to user
     const existingComment = await queries.getCommentById(commentId);
-    if (!existingComment) return res.status(404).json({ error: "Comment not found" });
+    if (!existingComment) return res.status(404).json({ success: false, message: "Comment not found" });
 
     if (existingComment.userId !== userId) {
-      return res.status(403).json({ error: "You can only delete your own comments" });
+      return res.status(403).json({ success: false, message: "You can only delete your own comments" });
     }
 
     await queries.deleteComment(commentId);
-    res.status(200).json({ message: "Comment deleted successfully" });
+    res.status(200).json({ success: true, message: "Comment deleted successfully", data: null });
   } catch (error) {
     console.error("Error deleting comment:", error);
-    res.status(500).json({ error: "Failed to delete comment" });
+    res.status(500).json({ success: false, message: "Failed to delete comment" });
   }
 };

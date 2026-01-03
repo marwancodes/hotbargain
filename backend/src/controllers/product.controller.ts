@@ -7,10 +7,10 @@ import { getAuth } from '@clerk/express';
 export const getAllProducts = async (req: Request, res: Response) => {
     try {
         const products = await queries.getAllProducts();
-        res.status(200).json({ message: 'Products fetched successfully', products });
+        res.status(200).json({ success: true, message: 'Products fetched successfully', data: products });
     } catch (error) {
         console.error('Error fetching products:', error);
-        res.status(500).json({ error: 'Failed to fetch products' });
+        res.status(500).json({ success: false, message: 'Failed to fetch products' });
     }
 }
 
@@ -18,13 +18,13 @@ export const getAllProducts = async (req: Request, res: Response) => {
 export const getMyProducts = async (req: Request, res: Response) => {
   try {
     const { userId } = getAuth(req);
-    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!userId) return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const products = await queries.getProductsByUserId(userId);
-    res.status(200).json({ message: "User products fetched successfully", products });
+    res.status(200).json({ success: true, message: "User products fetched successfully", data: products });
   } catch (error) {
     console.error("Error getting user products:", error);
-    res.status(500).json({ error: "Failed to get user products" });
+    res.status(500).json({ success: false, message: "Failed to get user products" });
   }
 };
 
@@ -34,13 +34,13 @@ export const getProductById = async (req: Request, res: Response) => {
     const { id } = req.params;
     const product = await queries.getProductById(id);
 
-    if (!product) return res.status(404).json({ error: "Product not found" });
+    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
 
-    res.status(200).json({ message: "Product fetched successfully", product });
+    res.status(200).json({ success: true, message: "Product fetched successfully", data: product });
 
   } catch (error) {
     console.error("Error getting product:", error);
-    res.status(500).json({ error: "Failed to get product" });
+    res.status(500).json({ success: false, message: "Failed to get product" });
   }
 };
 
@@ -49,12 +49,12 @@ export const getProductById = async (req: Request, res: Response) => {
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const { userId } = getAuth(req);
-    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!userId) return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const { title, description, imageUrl } = req.body;
 
     if (!title || !description || !imageUrl) {
-      res.status(400).json({ error: "Title, description, and imageUrl are required" });
+      res.status(400).json({ success: false, message: "Title, description, and imageUrl are required" });
       return;
     }
 
@@ -65,10 +65,10 @@ export const createProduct = async (req: Request, res: Response) => {
       userId,
     });
 
-    res.status(201).json({ message: "Product created successfully", product });
+    res.status(201).json({ success: true, message: "Product created successfully", data: product });
   } catch (error) {
     console.error("Error creating product:", error);
-    res.status(500).json({ error: "Failed to create product" });
+    res.status(500).json({ success: false, message: "Failed to create product" });
   }
 };
 
@@ -77,7 +77,7 @@ export const createProduct = async (req: Request, res: Response) => {
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { userId } = getAuth(req);
-    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!userId) return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const { id } = req.params;
     const { title, description, imageUrl } = req.body;
@@ -85,12 +85,12 @@ export const updateProduct = async (req: Request, res: Response) => {
     // Check if product exists and belongs to user
     const existingProduct = await queries.getProductById(id);
     if (!existingProduct) {
-      res.status(404).json({ error: "Product not found" });
+      res.status(404).json({ success: false, message: "Product not found" });
       return;
     }
 
     if (existingProduct.userId !== userId) {
-      res.status(403).json({ error: "You can only update your own products" });
+      res.status(403).json({ success: false, message: "You can only update your own products" });
       return;
     }
 
@@ -100,10 +100,10 @@ export const updateProduct = async (req: Request, res: Response) => {
       imageUrl,
     });
 
-    res.status(200).json({ message: "Product updated successfully", product });
+    res.status(200).json({ success: true, message: "Product updated successfully", data: product });
   } catch (error) {
     console.error("Error updating product:", error);
-    res.status(500).json({ error: "Failed to update product" });
+    res.status(500).json({ success: false, message: "Failed to update product" });
   }
 };
 
@@ -112,26 +112,26 @@ export const updateProduct = async (req: Request, res: Response) => {
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { userId } = getAuth(req);
-    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!userId) return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const { id } = req.params;
 
     // Check if product exists and belongs to user
     const existingProduct = await queries.getProductById(id);
     if (!existingProduct) {
-      res.status(404).json({ error: "Product not found" });
+      res.status(404).json({ success: false, message: "Product not found" });
       return;
     }
 
     if (existingProduct.userId !== userId) {
-      res.status(403).json({ error: "You can only delete your own products" });
+      res.status(403).json({ success: false, message: "You can only delete your own products" });
       return;
     }
 
     await queries.deleteProduct(id);
-    res.status(200).json({ message: "Product deleted successfully" });
+    res.status(200).json({ success: true, message: "Product deleted successfully", data: null });
   } catch (error) {
     console.error("Error deleting product:", error);
-    res.status(500).json({ error: "Failed to delete product" });
+    res.status(500).json({ success: false, message: "Failed to delete product" });
   }
 };
