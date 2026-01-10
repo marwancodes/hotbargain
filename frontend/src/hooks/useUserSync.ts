@@ -4,6 +4,8 @@ import { syncUser } from "../lib/api";
 import { useEffect } from "react";
 
 
+// the best way to implement this is by using webhooks
+
 const useUserSync = () => {
 
     const { isSignedIn } = useAuth();
