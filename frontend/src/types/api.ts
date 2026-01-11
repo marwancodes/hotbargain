@@ -8,6 +8,12 @@ export interface User {
   updatedAt: Date;
 }
 
+// ===== USER (PUBLIC VIEW) =====
+export interface PublicUser {
+  name: string | null;
+  imageUrl: string | null;
+}
+
 // ===== PRODUCTS =====
 export interface Product {
   id: string;
@@ -17,6 +23,7 @@ export interface Product {
   userId: string;
   createdAt: Date;
   updatedAt: Date;
+  user?: PublicUser;
 }
 
 // ===== COMMENTS =====
