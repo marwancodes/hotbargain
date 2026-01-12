@@ -125,10 +125,16 @@ const ProductPage = () => {
             )}
           </div>
         </div>
+      </div>
 
+      {/* Comments */}
+      <div className="card bg-base-300">
+        <div className="card-body">
+          <CommentsSection productId={id!} comments={product.comments} currentUserId={userId} />
+        </div>
       </div>
     </div>
   )
 }
 
-export default ProductPage
+export default ProductPage;

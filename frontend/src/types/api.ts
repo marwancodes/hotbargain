@@ -14,6 +14,16 @@ export interface PublicUser {
   imageUrl: string | null;
 }
 
+
+// ===== COMMENTS =====
+export interface Comment {
+  id: string;
+  content: string;
+  userId: string;
+  productId: string;
+  createdAt: Date;
+}
+
 // ===== PRODUCTS =====
 export interface Product {
   id: string;
@@ -24,15 +34,7 @@ export interface Product {
   createdAt: Date;
   updatedAt: Date;
   user?: PublicUser;
-}
-
-// ===== COMMENTS =====
-export interface Comment {
-  id: string;
-  content: string;
-  userId: string;
-  productId: string;
-  createdAt: Date;
+  comments?: Pick<Comment, "id">[];
 }
 
 // ===== REQUEST PAYLOADS =====

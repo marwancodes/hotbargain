@@ -19,7 +19,7 @@ const HomePage = () => {
         <span>Something went wrong. Please refresh the page.</span>
       </div>
     )
-  } 
+  };
 
   return (
     <div className="space-y-10">
@@ -55,7 +55,7 @@ const HomePage = () => {
       <div>
         <h2 className="text-xl font-bold flex items-center gap-2 mb-4">
           <PackageIcon className="size-5 text-primary" />
-          All Products
+          All Bargains
         </h2>
 
         {products.length === 0 ? (
@@ -79,7 +79,7 @@ const HomePage = () => {
       </div>
 
     </div>
-  )
+  );
 }
 
 export default HomePage;
