@@ -27,8 +27,8 @@ export const getProductById = async (id: string): Promise<Product> => {
 };
 
 export const getMyProducts = async (): Promise<Product[]> => {
-  const { data } = await api.get<Product[]>("/products/my");
-  return data;
+  const { data } = await api.get<ApiResponse<Product[]>>("/products/my");
+  return data.data ?? [];
 };
 
 export const createProduct = async (productData: CreateProductDTO): Promise<Product> => {

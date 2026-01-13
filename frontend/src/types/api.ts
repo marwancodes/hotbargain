@@ -37,6 +37,7 @@ export interface Product {
   comments?: Pick<Comment, "id">[];
 }
 
+
 // ===== REQUEST PAYLOADS =====
 export interface CreateProductDTO {
   title: string;

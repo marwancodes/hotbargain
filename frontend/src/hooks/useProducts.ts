@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createProduct, deleteProduct, getAllProducts, getProductById } from "../lib/api";
+import { createProduct, deleteProduct, getAllProducts, getProductById, getMyProducts } from "../lib/api";
 import type { Product } from "../types/api";
 
 export const useProducts = () => {
@@ -25,4 +25,8 @@ export const useProduct = (id: string) =>{
 
 export const useDeleteProduct = () => {
     return useMutation({ mutationFn: deleteProduct });
+};
+
+export const useMyProducts = () => {
+  return useQuery<Product[]>({ queryKey: ["myProducts"], queryFn: getMyProducts, initialData: [] });
 };
