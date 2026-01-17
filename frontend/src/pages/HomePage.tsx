@@ -42,10 +42,10 @@ const HomePage = () => {
               Upload, discover, and connect with creators.
             </p>
             <SignInButton mode="modal">
-              <button className="btn btn-primary">
+              <Link to={"/create"} className="btn btn-primary">
                 <SparklesIcon className="size-4" />
                 Start Selling
-              </button>
+              </Link>
             </SignInButton>
           </div>
         </div>

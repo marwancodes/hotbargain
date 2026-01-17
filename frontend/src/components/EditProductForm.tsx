@@ -8,7 +8,6 @@ interface EditProductFormProps {
     id: string;
     title: string;
     description: string;
-    price: number;
     imageUrl?: string;
   };
   isPending: boolean;

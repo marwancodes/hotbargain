@@ -39,7 +39,7 @@ const EditProductPage = () => {
       isError={updateProduct.isError}
       onSubmit={(formData) => {
         updateProduct.mutate(
-          { id, ...formData },
+          { id: id!, ...formData },
           {
             onSuccess: () => navigate(`/product/${id}`),
           }
